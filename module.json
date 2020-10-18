@@ -5,6 +5,7 @@
   "author": "danielrab",
   "version": "0.0.1-alpha",
   "minimumCoreVersion": "0.7.4",
+  "compatibleCoreVersion": "0.7.4",
   "esmodules": [
     "./scripts/smooth-combat.js",
     "./scripts/targeting.js",
