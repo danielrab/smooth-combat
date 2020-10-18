@@ -1,0 +1,15 @@
+{
+  "name": "smooth-combat",
+  "title": "Smooth Combat",
+  "description": "combat enhancements for 5e",
+  "author": "danielrab",
+  "version": "1.0.0",
+  "minimumCoreVersion": "0.7.4",
+  "esmodules": [
+    "./scripts/smooth-combat.js",
+    "./scripts/targeting.js",
+    "./scripts/html-generation.js",
+    "./scripts/util.js",
+    "./scripts/monkey-patching.js"
+  ]
+}
