@@ -60,7 +60,7 @@ async function useItem(item, modifiers, target) {
     item, modifiers.versatile, critical,
   );
   return {
-    attackRoll, damageRolls, critical, fumble, target,
+    attackRoll, damageRolls, critical, fumble, target, item, actor: item.actor,
   };
 }
 
@@ -73,6 +73,8 @@ async function safeUseWeapon(item) {
     versatile: event.shiftKey,
   };
 
+  await itemRollOG.call(item);
+
   let targets;
   targetingActive = true;
   try {
@@ -80,7 +82,6 @@ async function safeUseWeapon(item) {
   }
   catch (e) {
     ui.notifications.error(`failed to ensure target count: ${e}`);
-    itemRollOG.call(item);
     return false;
   }
   finally {
@@ -89,11 +90,10 @@ async function safeUseWeapon(item) {
 
   if (targets === null) return false; // do nothing if aborted
 
-  await itemRollOG.call(item);
-
   try {
     await Promise.all(targets.map(
       async (target) => ChatMessage.create({
+        sound: 'sounds/dice.wav',
         content: await attackResultHTML(await useItem(item, modifiers, target)),
       }),
     ));
@@ -105,6 +105,25 @@ async function safeUseWeapon(item) {
 
   return true;
 }
+
+function changeMacro(script, itemData) {
+  const originalCommand = script.command;
+  try {
+    script.command = `game.actors.get("${itemData.actorId}").items.get("${itemData.data._id}").roll();`;
+  }
+  catch (e) {
+    ui.notifications.error(`failed to change macro: ${e}`);
+    script.command = originalCommand;
+  }
+}
+
+function onItemHotbarDrop(hotbar, data) {
+  if (data.type !== 'Item') return;
+  if (data.data.type !== 'weapon') return;
+  Hooks.once('preCreateMacro', (script) => changeMacro(script, data));
+}
+
+Hooks.on('hotbarDrop', onItemHotbarDrop);
 
 Hooks.on('init', () => {
   itemRollOG = game.dnd5e.entities.Item5e.prototype.roll;
