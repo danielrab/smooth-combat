@@ -1,3 +1,4 @@
+manifest url: https://raw.githubusercontent.com/danielrab/smooth-combat/master/module.json </br></br>
 This module was inspired primarily by MidiQOL and tries to provide automation of combat for dnd5e. </br>
 Currently it is on a very early stage of development, so it only dealt with weapon attacks (not spells and feats). </br>
 My main goal when developing this module is first and foremost smooth user experience. It means that if a click or a keypress is avoidable, I will try to avoid it. It also means that on every step, the information must be presented in the cleanest form, and the user should have full control over every step of the process. </br>

@@ -14,5 +14,6 @@
   ],
   "system": "dnd5e",
   "url": "https://github.com/danielrab/smooth-combat",
-  "manifest": "https://raw.githubusercontent.com/danielrab/smooth-combat/master/module.json"
+  "manifest": "https://raw.githubusercontent.com/danielrab/smooth-combat/master/module.json",
+  "download": "https://github.com/danielrab/smooth-combat/archive/master.zip"
 }
