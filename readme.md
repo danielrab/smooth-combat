@@ -10,3 +10,4 @@ For now, what the module does is: </br>
 2.4) Selection of multiple targets will be inverted (no need to hold shift to select multiple). </br>
 2.5) Once you selected the target(s), an attack will be rolled for each target and damage will be rolled for each attack that hits showing each damage formula and their damage types separately (in case the enemy has resistance to some but not all of the damage dealt) </br>
 2.6) After all of this you will be returned to the tool and layer you were at, and the target selection will return to normal. </br>
+when using an item, alt will use advantage, ctrl will use disadvantage, shift will use versitile.
