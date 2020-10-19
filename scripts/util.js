@@ -1,4 +1,4 @@
-export function switchTool({ controlName, toolName }) {
+export default function switchTool({ controlName, toolName }) {
   const startingControl = ui.controls.activeControl;
   const startingTool = ui.controls.activeTool;
   const control = ui.controls.controls.find((c) => c.name === controlName);
@@ -7,8 +7,4 @@ export function switchTool({ controlName, toolName }) {
   canvas.layers.find((layer) => layer.name === control.layer).activate();
   ui.controls.render();
   return { controlName: startingControl, toolName: startingTool };
-}
-
-export function getFuncName() {
-  return getFuncName.caller.name;
 }

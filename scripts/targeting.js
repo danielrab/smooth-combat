@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import { switchTool } from './util.js';
+import switchTool from './util.js';
 import { patchTargeting, unpatchTargeting } from './monkey-patches.js';
 
 function clearTargets() {
@@ -66,14 +66,8 @@ export default function ensureTargets(amount) {
           callback: async () => {
             Hooks.off('targetToken', hook);
             manualTargeting = true;
-            try {
-              const res = await manualTargetSelect();
-              smartResolve(res);
-            }
-            catch {
-              ui.notifications.error('an error occured in targeting.manualTargetSelect');
-              smartResolve(currentTargets());
-            }
+            const res = await manualTargetSelect();
+            smartResolve(res);
           },
         },
       },

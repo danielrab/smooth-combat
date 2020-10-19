@@ -2,65 +2,28 @@
 
 import ensureTargets from './targeting.js';
 import attackResultHTML from './html-generation.js';
-import { getFuncName } from './util.js';
+import attackRoll from './AttackRoll.js';
+import damageRoll from './DamageRoll.js';
 
-const fileName = 'smooth-combat.js';
 let itemRollOG;
 let targetingActive = false;
 
-function isFumble(roll) {
-  try {
-    const die = roll.terms[0];
-    return die.results[0].result <= die.options.fumble;
-  }
-  catch (e) {
-    ui.notifications.error(`an error occured in ${fileName}, in ${getFuncName()}: ${e}`);
-    return false;
-  }
-}
-
-function isCritical(roll) {
-  try {
-    const die = roll.terms[0];
-    return die.results[0].result >= die.options.critical;
-  }
-  catch (e) {
-    ui.notifications.error(`an error occured in ${fileName}, in ${getFuncName()}: ${e}`);
-    return false;
-  }
-}
-
-async function itemDamageRolls(item, versatile, critical) {
-  try {
-    return Promise.all(item.data.data.damage.parts.map(async (part) => {
-      const roll = await game.dnd5e.dice.damageRoll({
-        parts: [part[0]], data: item.getRollData(), critical, fastForward: true, chatMessage: false,
-      });
-      const type = part[1];
-      return { roll, type };
-    }));
-  }
-  catch (e) {
-    ui.notifications.error(`an error occured in ${fileName}, in ${getFuncName()}: ${e}`);
-    return { roll: new Roll('1d1'), type: 'none' };
-  }
-}
-
 async function useItem(item, modifiers, target) {
-  const attackRoll = await item.rollAttack({
-    fastForward: true,
-    advantage: modifiers.advantage,
-    disadvantage: modifiers.disadvantage,
-    chatMessage: false,
-  });
-  const critical = isCritical(attackRoll);
-  const fumble = isFumble(attackRoll);
+  const attackRollResult = await attackRoll(item, modifiers);
 
-  const damageRolls = await itemDamageRolls(
-    item, modifiers.versatile, critical,
+  const damageRollResult = await damageRoll(
+    item, modifiers.versatile, attackRollResult.critical,
   );
+
+  if (attackRollResult.hits(target)) {
+    await damageRollResult.apply(target);
+  }
   return {
-    attackRoll, damageRolls, critical, fumble, target, item, actor: item.actor,
+    attackRoll: attackRollResult,
+    damageRoll: damageRollResult,
+    target,
+    item,
+    actor: item.actor,
   };
 }
 
