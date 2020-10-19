@@ -14,9 +14,9 @@ For now, what the module does is: <br>
 2.7) Damage will be applied using resistances, immunities, and vulnerabilities of the hit creatures (the weapons are assumed to be nonmagical until i find a way to differentiate between magical and nonmagical weapons). <br><br>
 when using an item, alt will use advantage, ctrl will use disadvantage, shift will use versitile. <br><br>
 planned in the near future:<br>
-1) sttings.
-2) a damage card for the DM to know how much damage was actually dealt after the resistances, as well as have an option to reverse it.
-3) ability to define a secondary use with multiple formulas. (currently versitle replaces only the first one).
-4) ability to define a weapon as magical for purposes of bypassing resistances.
-5) automatic disadvantage for ranged weapons depending on range.
-6) ability to define a token as in partial cover.
+1. sttings.
+2. a damage card for the DM to know how much damage was actually dealt after the resistances, as well as have an option to reverse it.
+3. ability to define a secondary use with multiple formulas. (currently versitle replaces only the first one).
+4. ability to define a weapon as magical for purposes of bypassing resistances.
+5. automatic disadvantage for ranged weapons depending on range.
+6. ability to define a token as in partial cover.
