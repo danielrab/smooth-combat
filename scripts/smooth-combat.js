@@ -4,6 +4,7 @@ import ensureTargets from './targeting.js';
 import attackResultHTML from './html-generation.js';
 import attackRoll from './AttackRoll.js';
 import damageRoll from './DamageRoll.js';
+import settings from './settings.js';
 
 let itemRollOG;
 let targetingActive = false;
@@ -38,46 +39,24 @@ async function safeUseWeapon(item) {
 
   await itemRollOG.call(item);
 
-  let targets;
   targetingActive = true;
-  try {
-    targets = await ensureTargets(1);
-  }
-  catch (e) {
-    ui.notifications.error(`failed to ensure target count: ${e}`);
-    return false;
-  }
-  finally {
-    targetingActive = false;
-  }
+  const targets = await ensureTargets(1);
+  targetingActive = false;
 
   if (targets === null) return false; // do nothing if aborted
 
-  try {
-    await Promise.all(targets.map(
-      async (target) => ChatMessage.create({
-        sound: 'sounds/dice.wav',
-        content: await attackResultHTML(await useItem(item, modifiers, target)),
-      }),
-    ));
-  }
-  catch (e) {
-    ui.notifications.error(`failed to create item attack messages: ${e}`);
-    return false;
-  }
+  await Promise.all(targets.map(
+    async (target) => ChatMessage.create({
+      sound: 'sounds/dice.wav',
+      content: await attackResultHTML(await useItem(item, modifiers, target)),
+    }),
+  ));
 
   return true;
 }
 
 function changeMacro(script, itemData) {
-  const originalCommand = script.command;
-  try {
-    script.command = `game.actors.get("${itemData.actorId}").items.get("${itemData.data._id}").roll();`;
-  }
-  catch (e) {
-    ui.notifications.error(`failed to change macro: ${e}`);
-    script.command = originalCommand;
-  }
+  script.command = `game.actors.get("${itemData.actorId}").items.get("${itemData.data._id}").roll();`;
 }
 
 function onItemHotbarDrop(hotbar, data) {
@@ -89,6 +68,8 @@ function onItemHotbarDrop(hotbar, data) {
 Hooks.on('hotbarDrop', onItemHotbarDrop);
 
 Hooks.on('init', () => {
+  settings.init();
+
   itemRollOG = game.dnd5e.entities.Item5e.prototype.roll;
   async function itemRollReplacement(options = {}) {
     if (this.data.type === 'weapon') safeUseWeapon(this);
@@ -96,4 +77,12 @@ Hooks.on('init', () => {
   }
 
   game.dnd5e.entities.Item5e.prototype.roll = itemRollReplacement;
+});
+
+Hooks.on('renderChatMessage', (message, html) => {
+  if (message.data.flags.template) {
+    const rendered = renderTemplate(message.data.flags.template, { flags: message.data.flags });
+    html.find('.message-content')[0].innerHTML = rendered;
+    message.data.content = rendered;
+  }
 });

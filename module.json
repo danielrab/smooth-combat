@@ -8,14 +8,11 @@
   "compatibleCoreVersion": "0.7.4",
   "esmodules": [
     "./scripts/smooth-combat.js",
-    "./scripts/targeting.js",
-    "./scripts/html-generation.js",
-    "./scripts/util.js",
     "./scripts/monkey-patching.js",
-    "./scripts/AttackRoll.js",
-    "./scripts/DamageRoll.js",
-    "./scripts/DamageRollPart.js",
-    "./scripts/TokenHandler.js"
+    "./scripts/hooks.js"
+  ],
+  "styles": [
+    "./styles/smooth-combat.css"
   ],
   "system": "dnd5e",
   "url": "https://github.com/danielrab/smooth-combat",

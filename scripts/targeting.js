@@ -2,6 +2,7 @@
 
 import switchTool from './util.js';
 import { patchTargeting, unpatchTargeting } from './monkey-patches.js';
+import settings from './settings.js';
 
 function clearTargets() {
   game.user.targets.forEach((token) => token.setTarget(false));
@@ -11,11 +12,11 @@ function currentTargets() {
   return Array.from(game.user.targets);
 }
 
-function manualTargetSelect() {
+function manualTargetSelect(amount) {
   const promise = new Promise((resolve) => {
     const dialog = new Dialog({
       title: 'Choose Target(s)',
-      content: '<p>choose targets then press done</p>',
+      content: `<p>${amount} targets recommended</p>`,
       buttons: {
         abort: {
           icon: '<i class="fas fa-check"></i>',
@@ -33,10 +34,10 @@ export default function ensureTargets(amount) {
   if (!(amount > 0)) {
     return [];
   }
-  // if (game.user.targets.size === amount) {
-  //   return Array.from(game.user.targets);
-  // }
-  clearTargets();
+  if (game.user.targets.size === amount) {
+    return Array.from(game.user.targets);
+  }
+  if (settings.removeTargetsPre) clearTargets();
   patchTargeting();
 
   const startingTool = switchTool({ controlName: 'token', toolName: 'target' });
@@ -47,7 +48,7 @@ export default function ensureTargets(amount) {
       Hooks.off('targetToken', hook);
       unpatchTargeting();
       switchTool(startingTool);
-      clearTargets();
+      if (settings.removeRargetsPost) clearTargets();
       resolve(result);
     }
 
@@ -66,7 +67,7 @@ export default function ensureTargets(amount) {
           callback: async () => {
             Hooks.off('targetToken', hook);
             manualTargeting = true;
-            const res = await manualTargetSelect();
+            const res = await manualTargetSelect(amount);
             smartResolve(res);
           },
         },

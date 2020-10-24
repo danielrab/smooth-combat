@@ -8,7 +8,8 @@ class AttackRollHandler {
   }
 
   async render() {
-    return this.roll.render();
+    const roll = await this.roll.render();
+    return roll;
   }
 
   get die() {
