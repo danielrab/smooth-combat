@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-restricted-globals */
 
 import ensureTargets from './targeting.js';
@@ -80,9 +81,17 @@ Hooks.on('init', () => {
 });
 
 Hooks.on('renderChatMessage', (message, html) => {
-  if (message.data.flags.template) {
-    const rendered = renderTemplate(message.data.flags.template, { flags: message.data.flags });
+  const { flags } = message.data;
+  if (flags.template) {
+    const rendered = renderTemplate(flags.template, flags.templateParams);
     html.find('.message-content')[0].innerHTML = rendered;
     message.data.content = rendered;
   }
+});
+
+Handlebars.registerHelper('ifObject', function (item, options) {
+  if (typeof item === 'object') {
+    return options.fn(this);
+  }
+  return options.inverse(this);
 });

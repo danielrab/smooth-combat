@@ -63,4 +63,8 @@ Actor.prototype.damageMultiplier = function (damageType) {
   if (this.vulnerable(damageType)) res *= 2;
   return res;
 };
+
+Object.defineProperty(Actor.prototype, 'ac', { get() {
+  return fixedPhysical(this.data.data.attributes.ac.value);
+} });
 // #endregion
