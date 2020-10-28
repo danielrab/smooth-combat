@@ -1,0 +1,8 @@
+{{> ./modules/smooth-combat/templates/roll.hbs attackRoll}}
+{{actor.name}} {{#if attackRoll.hits}}hits{{else}}misses{{/if}} with {{item.name}}
+{{#if attackRoll.hits}}
+  </br>dealing
+  <div class="smooth-combat-multiroll">
+    {{> ./modules/smooth-combat/templates/damageRoll.hbs damageRoll}}
+  </div>
+{{/if}}
