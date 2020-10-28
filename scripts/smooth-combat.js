@@ -57,7 +57,6 @@ async function safeUseWeapon(item) {
 }
 
 function changeMacro(script, itemData) {
-  console.log(itemData);
   script.command = `let actor = game.actors.tokens["${itemData.tokenId}"];
 if (!actor) actor = game.actors.get("${itemData.actorId}");
 
@@ -69,7 +68,6 @@ else game.dnd5e.rollItemMacro("${itemData.data.name}")`;
 }
 
 function onItemHotbarDrop(hotbar, data) {
-  console.log(data);
   if (data.type !== 'Item') return;
   if (data.data.type !== 'weapon') return;
   Hooks.once('preCreateMacro', (script) => changeMacro(script, data));
