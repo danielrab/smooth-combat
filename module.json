@@ -4,8 +4,8 @@
   "description": "combat enhancements for 5e",
   "author": "danielrab",
   "version": "0.0.3-alpha",
-  "minimumCoreVersion": "0.7.4",
-  "compatibleCoreVersion": "0.7.4",
+  "minimumCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "0.7.5",
   "esmodules": [
     "./scripts/smooth-combat.js",
     "./scripts/monkey-patching.js",
