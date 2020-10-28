@@ -1,4 +1,4 @@
-.damage-button {
+.smooth-combat-damage-button {
   width: 22px; 
   height: 22px; 
   font-size: 10px; 
@@ -7,7 +7,7 @@
   border: 1px solid #999;
 }
 
-.attack-roll-die {
+.smooth-combat-die {
   position: relative;
   width: 24px;
   line-height: 24px;
@@ -22,11 +22,16 @@
   background-image: url("../icons/d20-grey.svg");
 }
 
-.attack-roll-die.discarded {
+.smooth-combat-die.discarded {
   filter: sepia(0.5) contrast(0.75) opacity(0.75);
+  width: 16px;
+  line-height: 16px;
+  background-size: 16px 16px;
+  font-size: 11px;
+  margin-top: 4px;
 }
 
-.roll-details {
+.smooth-combat-roll-details {
   display: flex;
   justify-content: center;
   flex: 0 0 100%;
@@ -38,4 +43,33 @@
   border-radius: 3px;
   box-shadow: 0 0 2px #FFF inset;
   word-break: break-all;
+}
+
+.smooth-combat-roll {
+  display: block;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-content: space-around;
+}
+
+.smooth-combat-total {
+  flex: 0 0 100%;
+  position: relative;
+  margin: 0;
+  line-height: 24px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid #999;
+  border-radius: 3px;
+  box-shadow: 0 0 2px #FFF inset;
+  word-break: break-all;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.smooth-combat-multiroll {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 5px;
 }

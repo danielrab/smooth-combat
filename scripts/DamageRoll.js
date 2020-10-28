@@ -6,10 +6,6 @@ class DamageRollHandler {
     this.parts = parts;
   }
 
-  async render() {
-    return (await Promise.all(this.parts.map((part) => part.render()))).join('\n');
-  }
-
   apply(target) {
     const damage = this.parts.map((part) => part.getDamage(target)).reduce((a, b) => a + b);
     if (settings.applyDamage) target.actor.applyDamage(damage);
@@ -19,11 +15,13 @@ class DamageRollHandler {
 
 export default async function damageRoll(item, versatile, critical) {
   const damageParts = item.data.data.damage.parts;
-  const versatileDamagePart = [item.data.data.damage.versatile, damageParts[0][1]];
   const rollParts = await Promise.all(damageParts.map(
     async (part) => DamageRollPart(item, part, critical),
   ));
-  const versatileRollPart = await DamageRollPart(item, versatileDamagePart, critical);
-  if (versatile) rollParts[0] = versatileRollPart;
+  if (versatile && item.data.data.damage.versatile) {
+    const versatileDamagePart = [item.data.data.damage.versatile, damageParts[0][1]];
+    const versatileRollPart = await DamageRollPart(item, versatileDamagePart, critical);
+    rollParts[0] = versatileRollPart;
+  }
   return new DamageRollHandler(rollParts);
 }

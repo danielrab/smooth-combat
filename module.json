@@ -9,7 +9,8 @@
   "esmodules": [
     "./scripts/smooth-combat.js",
     "./scripts/monkey-patching.js",
-    "./scripts/hooks.js"
+    "./scripts/hooks.js",
+    "./scripts/handlebars-setup.js"
   ],
   "styles": [
     "./styles/smooth-combat.css"

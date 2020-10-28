@@ -11,13 +11,13 @@ let itemRollOG;
 let targetingActive = false;
 
 async function useItem(item, modifiers, target) {
-  const attackRollResult = await attackRoll(item, modifiers);
+  const attackRollResult = await attackRoll(item, target, modifiers);
 
   const damageRollResult = await damageRoll(
     item, modifiers.versatile, attackRollResult.critical,
   );
 
-  if (attackRollResult.hits(target)) {
+  if (attackRollResult.hits) {
     await damageRollResult.apply(target);
   }
   return {
@@ -57,10 +57,19 @@ async function safeUseWeapon(item) {
 }
 
 function changeMacro(script, itemData) {
-  script.command = `game.actors.get("${itemData.actorId}").items.get("${itemData.data._id}").roll();`;
+  console.log(itemData);
+  script.command = `let actor = game.actors.tokens["${itemData.tokenId}"];
+if (!actor) actor = game.actors.get("${itemData.actorId}");
+
+let item;
+if (actor) item = actor.items.get("${itemData.data._id}");
+  
+if (item) item.roll();
+else game.dnd5e.rollItemMacro("${itemData.data.name}")`;
 }
 
 function onItemHotbarDrop(hotbar, data) {
+  console.log(data);
   if (data.type !== 'Item') return;
   if (data.data.type !== 'weapon') return;
   Hooks.once('preCreateMacro', (script) => changeMacro(script, data));
@@ -78,20 +87,4 @@ Hooks.on('init', () => {
   }
 
   game.dnd5e.entities.Item5e.prototype.roll = itemRollReplacement;
-});
-
-Hooks.on('renderChatMessage', (message, html) => {
-  const { flags } = message.data;
-  if (flags.template) {
-    const rendered = renderTemplate(flags.template, flags.templateParams);
-    html.find('.message-content')[0].innerHTML = rendered;
-    message.data.content = rendered;
-  }
-});
-
-Handlebars.registerHelper('ifObject', function (item, options) {
-  if (typeof item === 'object') {
-    return options.fn(this);
-  }
-  return options.inverse(this);
 });

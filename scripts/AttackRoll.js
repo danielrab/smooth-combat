@@ -1,15 +1,11 @@
 class AttackRollHandler {
-  constructor(roll) {
+  constructor(roll, target) {
     this.roll = roll;
+    this.target = target;
   }
 
-  hits(target) {
-    return this.total >= target.actor.ac && !this.fumble;
-  }
-
-  async render() {
-    const roll = await renderTemplate('./modules/smooth-combat/templates/attackRoll.html', this.roll);
-    return roll;
+  get hits() {
+    return this.total >= this.target.actor.ac && !this.fumble;
   }
 
   get die() {
@@ -18,6 +14,10 @@ class AttackRollHandler {
 
   get total() {
     return this.roll.total;
+  }
+
+  get formula() {
+    return this.roll._formula;
   }
 
   get critical() {
@@ -29,12 +29,11 @@ class AttackRollHandler {
   }
 }
 
-export default async function attackRoll(item, { advantage = false, disadvantage = false }) {
+export default async function attackRoll(item, target, options) {
   const roll = await item.rollAttack({
+    ...options,
     fastForward: true,
-    advantage,
-    disadvantage,
     chatMessage: false,
   });
-  return new AttackRollHandler(roll);
+  return new AttackRollHandler(roll, target);
 }
