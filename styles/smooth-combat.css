@@ -1,0 +1,41 @@
+.damage-button {
+  width: 22px; 
+  height: 22px; 
+  font-size: 10px; 
+  line-height: 1px;
+	background-color: white;
+  border: 1px solid #999;
+}
+
+.attack-roll-die {
+  position: relative;
+  width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  background-image: url("../icons/d20-grey.svg");
+}
+
+.attack-roll-die.discarded {
+  filter: sepia(0.5) contrast(0.75) opacity(0.75);
+}
+
+.roll-details {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 100%;
+  position: relative;
+  margin: 0;
+  line-height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid #999;
+  border-radius: 3px;
+  box-shadow: 0 0 2px #FFF inset;
+  word-break: break-all;
+}

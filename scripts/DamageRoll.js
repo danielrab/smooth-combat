@@ -1,4 +1,5 @@
 import DamageRollPart from './DamageRollPart.js';
+import settings from './settings.js';
 
 class DamageRollHandler {
   constructor(parts) {
@@ -11,7 +12,7 @@ class DamageRollHandler {
 
   apply(target) {
     const damage = this.parts.map((part) => part.getDamage(target)).reduce((a, b) => a + b);
-    target.actor.applyDamage(damage);
+    if (settings.applyDamage) target.actor.applyDamage(damage);
     return damage;
   }
 }

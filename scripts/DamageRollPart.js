@@ -1,5 +1,3 @@
-import TokenHandler from './TokenHandler.js';
-
 class DamageRollPartHandler {
   constructor(roll, type) {
     this.roll = roll;
@@ -7,7 +5,11 @@ class DamageRollPartHandler {
   }
 
   async render() {
-    return `${await this.roll.render()} ${this.type} damage`;
+    const rollElement = $(await this.roll.render());
+    const diceTotal = rollElement.find('.dice-total');
+    window.test = diceTotal;
+    diceTotal[0].innerHTML += ` ${this.type} <button class="damage-button"><i class="fas fa-user-minus" title="Click to apply full damage to selected token(s)."></i></button>`;
+    return rollElement[0].outerHTML;
   }
 
   get total() {
@@ -15,7 +17,7 @@ class DamageRollPartHandler {
   }
 
   getDamage(target) {
-    return Math.floor(new TokenHandler(target).damageMultiplier(this.type) * this.total);
+    return Math.floor(target.actor.damageMultiplier(this.type) * this.total);
   }
 }
 

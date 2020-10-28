@@ -4,11 +4,12 @@ class AttackRollHandler {
   }
 
   hits(target) {
-    return this.roll.total >= target.actor.data.data.attributes.ac.value;
+    return this.total >= target.actor.ac && !this.fumble;
   }
 
   async render() {
-    return this.roll.render();
+    const roll = await renderTemplate('./modules/smooth-combat/templates/attackRoll.html', this.roll);
+    return roll;
   }
 
   get die() {
